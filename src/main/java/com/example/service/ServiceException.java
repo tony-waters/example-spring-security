@@ -1,27 +1,27 @@
-package com.example.exception;
+package com.example.service;
 
-public class DomainException extends RuntimeException {
+public class ServiceException extends RuntimeException {
 
-	public DomainException() {
+	public ServiceException() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public DomainException(String message) {
+	public ServiceException(String message) {
 		super(message);
 		// TODO Auto-generated constructor stub
 	}
 
-	public DomainException(Throwable cause) {
+	public ServiceException(Throwable cause) {
 		super(cause);
 		// TODO Auto-generated constructor stub
 	}
 
-	public DomainException(String message, Throwable cause) {
+	public ServiceException(String message, Throwable cause) {
 		super(message, cause);
 		// TODO Auto-generated constructor stub
 	}
 
-	public DomainException(String message, Throwable cause,
+	public ServiceException(String message, Throwable cause,
 			boolean enableSuppression, boolean writableStackTrace) {
 		super(message, cause, enableSuppression, writableStackTrace);
 		// TODO Auto-generated constructor stub

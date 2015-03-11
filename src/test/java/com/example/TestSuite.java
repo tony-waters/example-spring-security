@@ -5,8 +5,7 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-	com.example.model.MonthTest.class,
-	com.example.repository.FooRepositoryTest.class
+	com.example.service.FooServiceTest.class
 })
 public class TestSuite {
 
