@@ -42,13 +42,13 @@ public class FooServiceTest {
 	@Resource
 	AuthenticationManager authenticationManager;
 	
-	@Autowired
+	@Resource
 	private DataSource dataSource;
 	
-	@Autowired
+	@Resource(name="authService")
 	private UserDetailsService userDetailsService;
 	
-	@Autowired
+	@Resource
 	private FooService fooService;
 	
 	private static final String FIRST_NAME_1 = "Alice";
@@ -81,16 +81,16 @@ public class FooServiceTest {
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
    		
    		Operation operation = sequenceOf(
-			deleteAllFrom("ROLE_PERMISSION", "MEMBER_ROLE", "CREDENTIALS", "MEMBER", "PERMISSION", "ROLE"),
-			insertInto("CREDENTIALS")				
-				.columns("USERNAME", "VERSION", "PASSWORD", "ENABLED")
-				.values(USERNAME_1,"0", passwordEncoder.encode(PASSWORD_1), true)
-				.values(USERNAME_2,"0", passwordEncoder.encode(PASSWORD_2), true)
-				.build(),
+			deleteAllFrom("ROLE_PERMISSION", "CREDENTIALS_ROLE", "CREDENTIALS", "MEMBER", "PERMISSION", "ROLE"),
 			insertInto("MEMBER")				
 				.columns("ID", "VERSION", "FIRST_NAME", "LAST_NAME", "USERNAME")
 				.values("1","0", FIRST_NAME_1, LAST_NAME_1, USERNAME_1)
 				.values("2","0", FIRST_NAME_2, LAST_NAME_2, USERNAME_2)
+				.build(),
+			insertInto("CREDENTIALS")				
+				.columns("USERNAME", "VERSION", "PASSWORD", "ENABLED")
+				.values(USERNAME_1,"0", passwordEncoder.encode(PASSWORD_1), true)
+				.values(USERNAME_2,"0", passwordEncoder.encode(PASSWORD_2), true)
 				.build(),
 			insertInto("ROLE")				
 				.columns("ID", "VERSION", "NAME")
@@ -104,7 +104,7 @@ public class FooServiceTest {
 				.values(PERM_CREATE_FOO_ID, "0", PERM_CREATE_FOO)
 				.values(PERM_DELETE_FOO_ID, "0", PERM_DELETE_FOO)
 				.build(),
-			insertInto("MEMBER_ROLE")				
+			insertInto("CREDENTIALS_ROLE")				
 				.columns("USERNAME", "ROLE_ID")
 				.values(USERNAME_1, ROLE_USER_ID)
 				.values(USERNAME_2, ROLE_USER_ID)
@@ -122,7 +122,15 @@ public class FooServiceTest {
    		dbSetup.launch();
 //   		dbSetupTracker.launchIfNecessary(dbSetup);
    	}
-   	
+
+	@Test
+	public void login_security() {
+		login(" or 0=0", " or 0=0");
+		assertThat(fooService.readFoo()).isTrue();
+
+//   		assertThat(getAuthorities()).extracting("authority").containsOnly(PERM_READ_FOO);
+	}
+	
 	@Test
 	public void user_permissions() {
 		login(USERNAME_1, PASSWORD_1);

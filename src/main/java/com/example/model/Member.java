@@ -1,6 +1,7 @@
 package com.example.model;
 
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -21,8 +22,8 @@ public class Member {
 	@Column(name = "VERSION")
 	private Integer version;
 
-	@Column(name = "USERNAME")
-	private String username;
+	@Embedded
+	private Username username;
 
 	@Column(name = "FIRST_NAME")
 	private String firstName;
@@ -31,6 +32,6 @@ public class Member {
 	private String lastName;
 
 	public String getUsername() {
-		return username;
+		return username.getValue();
 	}
 }

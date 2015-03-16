@@ -4,24 +4,28 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import com.example.model.Username;
+
 @Entity
 @Table(name="CREDENTIALS")
 public class Credentials {
 
-	@Id
-	@Column(name = "USERNAME")
-	private String username;
+	@EmbeddedId
+//	@AttributeOverride(name = "value", column = @Column(name = "USERNAME"))
+	private Username username;
 	
-	@Column(name = "PASSWORD")
-	private String password;
+//	@Column(name = "PASSWORD")
+	@Embedded
+	private Password password;
 	
 	@Column(name = "ENABLED")
 	private Boolean enabled;
@@ -32,18 +36,18 @@ public class Credentials {
 	
 	@ManyToMany
 	@JoinTable(
-			name = "MEMBER_ROLE", 
+			name = "CREDENTIALS_ROLE", 
 			joinColumns = {@JoinColumn(name = "USERNAME", referencedColumnName = "USERNAME")}, 
 			inverseJoinColumns = {@JoinColumn(name = "ROLE_ID", referencedColumnName = "ID")}
 	)
 	private Collection<Role> roles = new HashSet<Role>();
 	
 	public String getUsername() {
-		return username;
+		return username.getValue();
 	}
 
 	public String getPassword() {
-		return password;
+		return password.getValue();
 	}
 
 	public Boolean isEnabled() {
