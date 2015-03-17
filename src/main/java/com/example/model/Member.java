@@ -30,8 +30,24 @@ public class Member {
 
 	@Column(name = "LAST_NAME")
 	private String lastName;
+	
+	public Member() {
+	}
+	
+	public Member(Username username, String firstName, String lastName) {
+		this.username = username;
+		this.firstName = firstName;
+		this.lastName = lastName;
+	}
 
 	public String getUsername() {
 		return username.getValue();
+	}
+
+	@Override
+	public String toString() {
+		return "Member [entityId=" + entityId + ", version=" + version
+				+ ", username=" + username + ", firstName=" + firstName
+				+ ", lastName=" + lastName + "]";
 	}
 }

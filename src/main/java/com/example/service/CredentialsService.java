@@ -1,8 +1,8 @@
 package com.example.service;
 
-import javax.annotation.Resource;
 import javax.transaction.Transactional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -13,11 +13,11 @@ import com.example.model.security.Credentials;
 import com.example.repository.CredentialsRepository;
 import com.example.security.CredentialsAdapter;
 
-@Service("authService")
+@Service("credentialsService")
 @Transactional
 public class CredentialsService implements UserDetailsService {
 	
-	@Resource
+	@Autowired
 	private CredentialsRepository credentialsRepository;
 	
 	@Override
